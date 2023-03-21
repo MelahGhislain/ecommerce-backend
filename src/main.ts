@@ -4,7 +4,10 @@ import 'express-async-error'
 import logger from './logger';
 import router from './routes';
 import errorHandler from './middlewares/globalErrorHandler';
+import dotenv from 'dotenv'
+dotenv.config()
 
+const PORT = process.env.PORT
 const app: Application = express()
 // middlewares 
 app.use(cors())
@@ -20,4 +23,4 @@ app.use('/api/delux/v1', router)
 // error handler
  app.use('*', errorHandler)
 
-app.listen(5000, ()=> logger.info('Server Started successfully!'))
+app.listen(PORT, ()=> logger.info('Server Started successfully! on port '+PORT))

@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "node main",
-    "dev": "nodemon main"
+    "start": "node ./src/main",
+    "dev": "nodemon ./src/main"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
