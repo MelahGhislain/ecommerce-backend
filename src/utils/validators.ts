@@ -6,8 +6,8 @@ const userValidationSchema = Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().min(4).required(),
     picture: Joi.string(),
-    cartItems: Joi.array(),
-    favorites: Joi.array(),
+    cartItems: Joi.array().items(Joi.string()),
+    favorites: Joi.array().items(Joi.string()),
     firstName: Joi.string(),
     lastName: Joi.string(),
     role: Joi.string()
