@@ -31,6 +31,19 @@ const productSchema = new mongoose.Schema({
     onPromotion: {
         type: Boolean,
         default: false
+    },
+    promoPrice: {
+        type: Number,
+        default: 0
+    },
+    inStock: {
+        type: Number,
+        default: 0
+    },
+    color: {
+        type: String,
+        required: [true, 'color is required'],
+        default: 'yellow'
     }
 }, {timestamps: true})
 

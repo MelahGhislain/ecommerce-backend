@@ -43,6 +43,6 @@ const userSchema = new mongoose.Schema({
    
 }, {timestamps: true})
 
-const User = mongoose.model(ModelEnum.User, userSchema)
+const UserModel = mongoose.model(ModelEnum.User, userSchema)
 
-export default User;
+export default UserModel;
