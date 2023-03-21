@@ -1,8 +1,9 @@
 import express, {Application, Response, Request} from 'express'
 import cors from 'cors'
-import logger from './src/logger';
-import router from './src/routes';
-import errorHandler from './src/middlewares/globalErrorHandler';
+import 'express-async-error'
+import logger from './logger';
+import router from './routes';
+import errorHandler from './middlewares/globalErrorHandler';
 
 const app: Application = express()
 // middlewares 

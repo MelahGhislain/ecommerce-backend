@@ -3,10 +3,10 @@ import CustomError from "../errors/CustomError";
 
 const errorHandler = (error: Error, req: Request, res: Response, next: NextFunction) => {
     if(error instanceof CustomError){
-        return res.send({errors: error.serializeErrors()})
+        return res.send({status: error.errorCode,errors: error.serializeErrors()})
     }
-
-    res.send({errors: [{message: 'some error occured'}]})
+    
+    res.send({status: 500, errors: [{message: 'Server Error'}]})
 
 }
 

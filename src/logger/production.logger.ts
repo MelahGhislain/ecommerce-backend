@@ -10,7 +10,7 @@ const productionLogger = () =>
       level: 'info',
       format: combine(timestamp(), customFormat),
       transports: [
-        new transports.File({ filename: 'error.log', level: 'error' }),
+        new transports.File({ filename: 'error.log', level: 'error'}),
       ],
   });
 
