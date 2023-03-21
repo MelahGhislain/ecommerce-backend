@@ -1,9 +1,9 @@
 import express, {Application, Response, Request} from 'express'
 import cors from 'cors'
 import 'express-async-error'
-import logger from './src/logger';
-import router from './src/routes';
-import errorHandler from './src/middlewares/globalErrorHandler';
+import logger from './logger';
+import router from './routes';
+import errorHandler from './middlewares/globalErrorHandler';
 import dotenv from 'dotenv'
 dotenv.config()
 
