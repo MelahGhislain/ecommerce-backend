@@ -1,8 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { CallbackError } from "mongoose";
 import { ModelEnum } from "../utils/constants";
+import { Role, User } from "../utils/types";
+import bcrypt from 'bcrypt'
 
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<User>({
     firstName: {
         type: String,
     },
@@ -13,20 +15,22 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'username is required'],
         min: [3, 'username too short'],
-        unique: true
+        unique: [true, 'a user with this name already exist']
     },
     email: {
         type: String,
         required: [true, 'email is required'],
-        unique: true
+        unique: [true, 'a user with this email already exist']
     },
     password: {
         type: String,
+        select: false,
         required: [true, 'password is required'],
     },
     role: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: ModelEnum.Role
+        type: String,
+        enum: Role,
+        default: Role.USER
     },
     picture: {
         type: String,
@@ -43,6 +47,26 @@ const userSchema = new mongoose.Schema({
    
 }, {timestamps: true})
 
-const UserModel = mongoose.model(ModelEnum.User, userSchema)
+userSchema.pre('save', async function(next){
+    if(!this.isModified('password')) return next()
+    try {
+        if(this.password){
+            const salt = await bcrypt.genSalt(10)
+            this.password = await bcrypt.hash(this.password, salt)
+        }
+        return next()
+    } catch (error) {
+        return next(error as CallbackError)
+    }
+})
+
+userSchema.set('toObject', {
+    transform(doc, ret, options) {
+        delete ret.password
+        return ret
+    },
+})
+
+const UserModel = mongoose.model<User>(ModelEnum.User, userSchema)
 
 export default UserModel;

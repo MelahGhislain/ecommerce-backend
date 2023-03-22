@@ -10,7 +10,7 @@ import {
 const router = Router()
 
 // Create a new user
-router.post('/create', registerUser)
+router.post('/', registerUser)
 
 // Get all users
 router.get('/', fetchUsers)

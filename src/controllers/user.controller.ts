@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import ValidationError from "../errors/ValidationError";
-import { createNewUser } from "../services/user.service";
+import { createNewUser, deleteUser, editUser, getUser, getUsers } from "../services/user.service";
 import tryCatch from "../utils/tryCatch";
 
 export const registerUser = tryCatch(async (req: Request, res: Response) => {
@@ -8,15 +7,26 @@ export const registerUser = tryCatch(async (req: Request, res: Response) => {
     if(user)
         res.status(201).json({data: user})
 })
-export const fetchUsers = tryCatch((req: Request, res: Response) => {
-    res.send('get all user route')
+export const fetchUsers = tryCatch(async (req: Request, res: Response) => {
+    const users = await getUsers()
+    if(users)
+        return res.status(200).json({data: users})
 })
-export const fetchUser = tryCatch((req: Request, res: Response) => {
-    res.send('get user route')
+export const fetchUser = tryCatch(async (req: Request, res: Response) => {
+    const {id} = req.params
+    const user = await getUser(id)
+    if(user)
+        return res.status(200).json({data: user})
 })
 export const updateUser = tryCatch(async(req: Request, res: Response) => {
-    res.send('update user route')
+    const {id} = req.params
+    const user = await editUser(id, req.body)
+    if(user)
+        return res.status(200).json({data: user})
 })
 export const removeUser = tryCatch(async(req: Request, res: Response) => {
-    res.send('delete user route')
+    const {id} = req.params
+    const user = await deleteUser(id)
+    if(user)
+        return res.status(200).json({data: user})
 })

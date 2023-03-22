@@ -5,8 +5,9 @@ class ValidationError extends CustomError {
     errorCode = 400
     errorType = ErrorType.ValidationError
 
-    constructor(private property: string, message: string){
+    constructor(private property: string, message: string, status?: number){
         super(message)
+        this.errorCode = status || 400
 
         Object.setPrototypeOf(this, ValidationError.prototype)
     }

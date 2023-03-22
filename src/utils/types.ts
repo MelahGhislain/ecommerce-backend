@@ -1,4 +1,9 @@
 import mongoose from "mongoose";
+export enum Role {
+    USER = 'USER',
+    ADMIN = 'ADMIN',
+    SUPERADMIN = 'SUPERADMIN'
+}
 
 export interface User {
     username?: string;
@@ -10,9 +15,6 @@ export interface User {
     firstName?: string | undefined;
     lastName?: string | undefined;
     role?: mongoose.Types.ObjectId | undefined;
-}
-export interface Role {
-    
 }
 
 export interface Product {
