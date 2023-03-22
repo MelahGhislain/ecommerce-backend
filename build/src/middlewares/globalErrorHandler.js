@@ -8,6 +8,11 @@ const errorHandler = (error, req, res, next) => {
     if (error instanceof CustomError_1.default) {
         return res.send({ status: error.errorCode, errors: error.serializeErrors() });
     }
+    if (error.name === "MongoServerError" && error.code === 11000) {
+        const nameArr = error.message.match(/\{ (.*?)\:/);
+        const name = nameArr ? nameArr[1] : '';
+        return res.send({ status: 400, errors: [{ message: `${name} already exists`, property: name }] });
+    }
     res.send({ status: 500, errors: [{ message: 'Server Error' }] });
 };
 exports.default = errorHandler;
