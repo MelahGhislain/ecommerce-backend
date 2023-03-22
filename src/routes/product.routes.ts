@@ -7,11 +7,12 @@ import {
     updateProduct,
      
 } from "../controllers";
+import { authHandler } from "../middlewares/authHandler";
 
 const router = Router()
 
 // Create a new product
-router.post('/create', createProduct)
+router.post('/', authHandler, createProduct)  
 
 // Get all products
 router.get('/', fetchProducts)

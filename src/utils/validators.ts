@@ -13,8 +13,16 @@ const userValidationSchema = Joi.object().keys({
     lastName: Joi.string(),
     role: Joi.string()
 })
+const loginSchema = Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(4).required()
+})
 
 export function validateUser(user: User) {
     const {value, error} = userValidationSchema.validate(user)
+    return formatError(error)
+}
+export function authValidate(user: {email: string, password: string}) {
+    const {value, error} = loginSchema.validate(user)
     return formatError(error)
 }

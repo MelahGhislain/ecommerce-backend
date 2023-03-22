@@ -24,8 +24,13 @@ const userSchema = new mongoose.Schema<User>({
     },
     password: {
         type: String,
-        select: false,
         required: [true, 'password is required'],
+    },
+    refreshToken: {
+        type: String,
+    },
+    otp: {
+        type: String
     },
     role: {
         type: String,
@@ -58,13 +63,6 @@ userSchema.pre('save', async function(next){
     } catch (error) {
         return next(error as CallbackError)
     }
-})
-
-userSchema.set('toObject', {
-    transform(doc, ret, options) {
-        delete ret.password
-        return ret
-    },
 })
 
 const UserModel = mongoose.model<User>(ModelEnum.User, userSchema)

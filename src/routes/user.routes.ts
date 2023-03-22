@@ -4,13 +4,15 @@ import {
     fetchUsers, 
     registerUser, 
     removeUser, 
-    updateUser 
+    updateUser,
+    loginUser
 } from "../controllers";
 
 const router = Router()
 
 // Create a new user
 router.post('/', registerUser)
+router.post('/login', loginUser)
 
 // Get all users
 router.get('/', fetchUsers)
