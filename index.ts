@@ -5,6 +5,7 @@ import logger from './src/logger';
 import router from './src/routes';
 import errorHandler from './src/middlewares/globalErrorHandler';
 import dotenv from 'dotenv'
+import connect from './src/db';
 dotenv.config()
 
 const PORT = process.env.PORT
@@ -23,4 +24,8 @@ app.use('/api/delux/v1', router)
 // error handler
  app.use('*', errorHandler)
 
-app.listen(PORT, ()=> logger.info('Server Started successfully! on port '+PORT))
+ connect().then(res => {
+    app.listen(PORT, ()=> logger.info('Server Started successfully! on port ' + PORT))
+ }).catch(error => {
+   logger.error(error.message)
+ })

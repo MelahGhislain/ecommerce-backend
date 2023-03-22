@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { formatError } from "./helpers";
 import { User } from "./types";
 
 const userValidationSchema = Joi.object().keys({
@@ -13,6 +14,7 @@ const userValidationSchema = Joi.object().keys({
     role: Joi.string()
 })
 
-export function isUserValid(user: User): boolean{
- return true
+export function validateUser(user: User) {
+    const {value, error} = userValidationSchema.validate(user)
+    return formatError(error)
 }
