@@ -1,10 +1,20 @@
-import mongoose, { CallbackError } from "mongoose";
+import mongoose, { CallbackError, Schema } from "mongoose";
 import { ModelEnum } from "../utils/constants";
-import { Role, User } from "../utils/types";
+import { Role, User, ICart } from "../utils/types";
 import bcrypt from 'bcrypt'
 
+const cartSchema = new Schema<ICart>({
+    product: {
+        type: Schema.Types.ObjectId, 
+        ref: ModelEnum.Product
+    },
+    numOfItems: {
+        type: Number, 
+        default: 1
+    }
+})
 
-const userSchema = new mongoose.Schema<User>({
+const userSchema = new Schema<User>({
     firstName: {
         type: String,
     },
@@ -41,12 +51,9 @@ const userSchema = new mongoose.Schema<User>({
         type: String,
         default: ''
     },
-    cartItems: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: ModelEnum.Product
-    }],
+    cartItems: [cartSchema],
     favorites:[{
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: ModelEnum.Product 
     }]
    

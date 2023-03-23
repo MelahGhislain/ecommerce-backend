@@ -10,13 +10,17 @@ export interface User {
     email?: string
     password?: string
     picture?: string
-    cartItems?: mongoose.Types.ObjectId[]
+    cartItems?: ICart[]
     favorites?: mongoose.Types.ObjectId[]
     firstName?: string | undefined
     lastName?: string | undefined
     role?: mongoose.Types.ObjectId | undefined
     refreshToken?: string
     otp?: string
+}
+export interface ICart {
+    product: mongoose.Types.ObjectId
+    numOfItems?: number
 }
 
 export interface Product {
