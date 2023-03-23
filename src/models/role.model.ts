@@ -1,17 +1,20 @@
-import mongoose from "mongoose";
-import { ModelEnum } from "../utils/constants";
+import mongoose from 'mongoose';
+import { ModelEnum } from '../utils/constants';
 
-const roleSchema = new mongoose.Schema({
+const roleSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: [true, 'name is required']
+      type: String,
+      required: [true, 'name is required'],
     },
     description: {
-        type: String,
-        required: [true, 'description is required']
+      type: String,
+      required: [true, 'description is required'],
     },
-}, {timestamps: true})
+  },
+  { timestamps: true },
+);
 
-const Role = mongoose.model(ModelEnum.Role, roleSchema)
+const Role = mongoose.model(ModelEnum.Role, roleSchema);
 
-export default Role
+export default Role;

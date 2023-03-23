@@ -7,6 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
+    "eslint:fix": "eslint --fix",
+    "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "start": "node ./build/index.js",
     "dev": "nodemon index"
   },
@@ -46,6 +48,11 @@
     "@types/nodemailer": "^6.4.7",
     "@types/otp-generator": "^4.0.0",
     "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "ts-node": "^10.9.1"
   },
   "engines": {

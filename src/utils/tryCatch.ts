@@ -1,13 +1,15 @@
-import { NextFunction, Request, Response } from "express"
+import { NextFunction, Request, Response } from 'express';
 
-type Controller = (req: Request, res: Response) => void
+type Controller = (req: Request, res: Response) => void;
 
-const tryCatch = (controller: Controller) => async (req: Request, res: Response, next: NextFunction) => {
+const tryCatch =
+  (controller: Controller) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-        await controller(req, res)
+      await controller(req, res);
     } catch (error) {
-        return next(error)
+      return next(error);
     }
-}
+  };
 
-export default tryCatch
+export default tryCatch;

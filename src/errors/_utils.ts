@@ -1,3 +1,3 @@
 export enum ErrorType {
-    ValidationError = 'VALIDATION_ERROR'
+  ValidationError = 'VALIDATION_ERROR',
 }

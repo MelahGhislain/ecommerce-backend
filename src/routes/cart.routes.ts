@@ -1,20 +1,23 @@
-import { Router } from "express";
-import { 
-} from "../controllers";
-import { addCartItem, editCartItem, fetchCartItems, removeCartItem } from "../controllers/cart.controller";
+import { Router } from 'express';
+import {
+  addCartItem,
+  editCartItem,
+  fetchCartItems,
+  removeCartItem,
+} from '../controllers';
 
-const router = Router()
+const router = Router();
 
 // Create a new cart item
-router.post('/', addCartItem)
+router.post('/', addCartItem);
 
 // Get all cart items
-router.get('/', fetchCartItems)
+router.get('/', fetchCartItems);
 
 // Update cart item
-router.put('/', editCartItem)
+router.put('/', editCartItem);
 
 // Remove a cart item
-router.delete('/', removeCartItem)
+router.delete('/', removeCartItem);
 
-export = router
+export = router;

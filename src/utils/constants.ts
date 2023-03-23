@@ -1,6 +1,6 @@
 export enum ModelEnum {
-    User = 'User',
-    Role = 'Role',
-    Product = 'Product',
-    Category = 'Category',
+  User = 'User',
+  Tag = 'Tag',
+  Product = 'Product',
+  Category = 'Category',
 }
