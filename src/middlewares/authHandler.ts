@@ -1,15 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
+import { IRequest } from "../utils/interfaces";
 dotenv.config()
 
 const SECRET_KEY = process.env.SECRET_KEY
 
 interface TokenPayload {
     id: string;
-}
-export interface IRequest extends Request {
-    userId?: string 
 }
 
 export const authHandler = async (req: IRequest, res: Response, next: NextFunction) => {

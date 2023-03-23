@@ -21,10 +21,10 @@ router.get('/', fetchProducts)
 router.get('/:id', fetchProduct)
 
 // Update product
-router.put('/:id', updateProduct)
+router.put('/:id', authHandler, updateProduct)
 
 // Remove a product
-router.delete('/:id', removeProduct)
+router.delete('/:id', authHandler, removeProduct)
 
 
 export = router

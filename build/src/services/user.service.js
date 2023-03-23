@@ -22,6 +22,11 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const SECRET_KEY = process.env.SECRET_KEY;
+/**
+ * Create a new user
+ * @param (user: User)
+ * @return user
+*/
 function createNewUser(user) {
     return __awaiter(this, void 0, void 0, function* () {
         const error = (0, validators_1.validateUser)(user);
@@ -33,33 +38,66 @@ function createNewUser(user) {
     });
 }
 exports.createNewUser = createNewUser;
+/**
+ * fetch all users
+ * @param ()
+ * @return [user]
+*/
 function getUsers() {
     return __awaiter(this, void 0, void 0, function* () {
-        const users = yield user_model_1.default.find({}).populate([{ path: constants_1.ModelEnum.Product, strictPopulate: false }]).exec();
+        const users = yield user_model_1.default.find({})
+            .populate({ path: constants_1.ModelEnum.Product, strictPopulate: false })
+            .populate({
+            path: 'cartItems',
+            populate: { path: constants_1.ModelEnum.Product, strictPopulate: false }
+        }).exec();
         return users;
     });
 }
 exports.getUsers = getUsers;
+/**
+ * fetch user by id
+ * @param (id: string)
+ * @return user
+*/
 function getUser(id) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!id)
             throw new ValidationError_1.default('id', 'user id is required');
         const user = yield user_model_1.default.findById(id)
-            .populate([{ path: constants_1.ModelEnum.Product, strictPopulate: false }]).exec();
+            .populate({ path: constants_1.ModelEnum.Product, strictPopulate: false })
+            .populate({
+            path: 'cartItems',
+            populate: { path: constants_1.ModelEnum.Product, strictPopulate: false }
+        }).exec();
         return user;
     });
 }
 exports.getUser = getUser;
+/**
+ * Update user
+ * @param (id: string, user: User)
+ * @return user
+*/
 function editUser(id, user) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!id)
             throw new ValidationError_1.default('id', 'user id is required');
-        const updateUser = yield user_model_1.default.findByIdAndUpdate(id, user, { new: true })
-            .populate([{ path: constants_1.ModelEnum.Product, strictPopulate: false }]).exec();
+        const updateUser = yield user_model_1.default.findByIdAndUpdate(id, { $set: user }, { new: true })
+            .populate({ path: constants_1.ModelEnum.Product, strictPopulate: false })
+            .populate({
+            path: 'cartItems',
+            populate: { path: constants_1.ModelEnum.Product, strictPopulate: false }
+        }).exec();
         return updateUser;
     });
 }
 exports.editUser = editUser;
+/**
+ * delete user by id
+ * @param (id: string)
+ * @return user
+*/
 function deleteUser(id) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!id)
@@ -69,6 +107,10 @@ function deleteUser(id) {
     });
 }
 exports.deleteUser = deleteUser;
+/**
+ * authenticate user by id
+ * @param (email: string, password: string)
+*/
 function signinUser(email, password) {
     return __awaiter(this, void 0, void 0, function* () {
         const error = (0, validators_1.authValidate)({ email, password });

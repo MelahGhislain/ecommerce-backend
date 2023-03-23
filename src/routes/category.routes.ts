@@ -6,11 +6,12 @@ import {
     removeCategory,
     updateCategory
 } from "../controllers";
+import { authHandler } from "../middlewares/authHandler";
 
 const router = Router()
 
 // Create a new category
-router.post('/create', createCategory)
+router.post('/create', authHandler, createCategory)
 
 // Get all categories
 router.get('/', fetchCategories)
@@ -19,10 +20,9 @@ router.get('/', fetchCategories)
 router.get('/:id', fetchCategory)
 
 // Update category
-router.put('/:id', updateCategory)
+router.put('/:id', authHandler, updateCategory)
 
 // Remove a user
-router.delete('/:id', removeCategory)
-
+router.delete('/:id', authHandler, removeCategory)
 
 export = router

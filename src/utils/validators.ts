@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { formatError } from "./helpers";
-import { User } from "./types";
+import { User } from "./interfaces";
 
 const userValidationSchema = Joi.object().keys({
     username: Joi.string().min(2).required(),

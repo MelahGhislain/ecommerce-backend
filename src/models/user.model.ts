@@ -1,6 +1,6 @@
 import mongoose, { CallbackError, Schema } from "mongoose";
 import { ModelEnum } from "../utils/constants";
-import { Role, User, ICart } from "../utils/types";
+import { Role, User, ICart } from "../utils/interfaces";
 import bcrypt from 'bcrypt'
 
 const cartSchema = new Schema<ICart>({

@@ -10,7 +10,7 @@ router.get('/', controllers_1.fetchProducts);
 // Get a single product
 router.get('/:id', controllers_1.fetchProduct);
 // Update product
-router.put('/:id', controllers_1.updateProduct);
+router.put('/:id', authHandler_1.authHandler, controllers_1.updateProduct);
 // Remove a product
-router.delete('/:id', controllers_1.removeProduct);
+router.delete('/:id', authHandler_1.authHandler, controllers_1.removeProduct);
 module.exports = router;

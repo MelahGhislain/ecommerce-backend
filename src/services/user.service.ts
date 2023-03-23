@@ -1,7 +1,7 @@
 import ValidationError from "../errors/ValidationError";
 import UserModel from "../models/user.model";
 import { ModelEnum } from "../utils/constants";
-import { Product, User } from "../utils/types";
+import { User } from "../utils/interfaces";
 import { authValidate, validateUser } from "../utils/validators";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
@@ -118,75 +118,3 @@ export async function signinUser(email: string, password: string){
 
     return null
 }
-
-/**
- * Update user 
- * @param (id: string, productId: User)
- * @return user
-*/
-export async function addToCart(id: string, productId: string){
-    if(!id)
-        throw new ValidationError('id', 'id is required')
-    else if(!productId)
-        throw new ValidationError('productId', 'productId is required')
-
-    const updateUser = await UserModel.findByIdAndUpdate(id, { $addToSet: { cartItems: {product: productId} } }, { new: true })
-            .populate({ path: ModelEnum.Product, strictPopulate: false })
-            .populate({ 
-                path: 'cartItems', 
-                populate: { path: ModelEnum.Product, strictPopulate: false }  
-            }).exec()
-    return updateUser
-}
-
-/**
- * Update user 
- * @param (id: string, data: {numOfItems: number})
- * @return user
-*/
-export async function updateCartItem(productId: string, data: {numOfItems: number}){
-    if(!data.numOfItems)
-        throw new ValidationError('numOfItems', 'numOfItems is required')
-    if(!productId)
-        throw new ValidationError('productId', 'productId is required')
-    
-    // remove item is numOfItem is 0
-    if(data.numOfItems === 0){
-        const user = await deleteCartItem(productId)
-        return user
-    }
-
-    const updateUser = await UserModel.findByIdAndUpdate({
-                'cartItems.product': productId}, 
-                {$set: {'cartItems.$': data}}, 
-                { new: true })
-        .populate({ path: ModelEnum.Product, strictPopulate: false })
-        .populate({ 
-            path: 'cartItems', 
-            populate: { path: ModelEnum.Product, strictPopulate: false }  
-        }).exec()
-        
-    return updateUser
-}
-
-/**
- * Update user 
- * @param (id: productId)
- * @return user
-*/
-export async function deleteCartItem(productId: string){
-    if(!productId)
-        throw new ValidationError('productId', 'productId is required')
-   
-    const user = await UserModel.findByIdAndUpdate(
-                    {'cartItems.product': productId}, 
-                    { $pull: { cartItems: {product: productId}}}, 
-                    { new: true })
-            .populate({ path: ModelEnum.Product, strictPopulate: false })
-            .populate({ 
-                path: 'cartItems', 
-                populate: { path: ModelEnum.Product, strictPopulate: false }  
-            }).exec()
-    return user
-}
-

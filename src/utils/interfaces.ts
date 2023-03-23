@@ -1,8 +1,13 @@
+import { Request } from "express";
 import mongoose from "mongoose";
 export enum Role {
     USER = 'USER',
     ADMIN = 'ADMIN',
     SUPERADMIN = 'SUPERADMIN'
+}
+
+export interface IRequest extends Request {
+    userId?: string 
 }
 
 export interface User {

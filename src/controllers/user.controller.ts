@@ -24,6 +24,7 @@ export const updateUser = tryCatch(async(req: Request, res: Response) => {
     if(user)
         return res.status(200).json({data: user})
 })
+
 export const removeUser = tryCatch(async(req: Request, res: Response) => {
     const {id} = req.params
     const user = await deleteUser(id)
@@ -38,3 +39,4 @@ export const loginUser = tryCatch(async(req: Request, res: Response) => {
 
     return res.status(200).json({data: user})
 })
+
