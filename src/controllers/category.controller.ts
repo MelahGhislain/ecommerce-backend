@@ -1,17 +1,37 @@
 import { Request, Response } from 'express';
+import {
+  createNewCategory,
+  deleteCategory,
+  editCategory,
+  getCategories,
+  getCategory,
+} from '../services';
+import tryCatch from '../utils/tryCatch';
 
-export const createCategory = (req: Request, res: Response) => {
-  res.send('register user route');
-};
-export const fetchCategories = (req: Request, res: Response) => {
-  res.send('get all Category route');
-};
-export const fetchCategory = (req: Request, res: Response) => {
-  res.send('get Category route');
-};
-export const updateCategory = (req: Request, res: Response) => {
-  res.send('update Category route');
-};
-export const removeCategory = (req: Request, res: Response) => {
-  res.send('delete user route');
-};
+export const createCategory = tryCatch(async (req: Request, res: Response) => {
+  const product = await createNewCategory(req.body);
+  if (product) return res.status(201).json({ data: product });
+});
+
+export const fetchCategories = tryCatch(async (req: Request, res: Response) => {
+  const category = await getCategories();
+  if (category) return res.status(200).json({ data: category });
+});
+
+export const fetchCategory = tryCatch(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const category = await getCategory(id);
+  if (category) return res.status(200).json({ data: category });
+});
+
+export const updateCategory = tryCatch(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const category = await editCategory(id, req.body);
+  if (category) return res.status(200).json({ data: category });
+});
+
+export const removeCategory = tryCatch(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const category = await deleteCategory(id);
+  if (category) return res.status(200).json({ data: category });
+});

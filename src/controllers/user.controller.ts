@@ -6,12 +6,12 @@ import {
   getUser,
   getUsers,
   signinUser,
-} from '../services/user.service';
+} from '../services';
 import tryCatch from '../utils/tryCatch';
 
 export const registerUser = tryCatch(async (req: Request, res: Response) => {
   const user = await createNewUser(req.body);
-  if (user) res.status(201).json({ data: user });
+  if (user) return res.status(201).json({ data: user });
 });
 export const fetchUsers = tryCatch(async (req: Request, res: Response) => {
   const users = await getUsers();

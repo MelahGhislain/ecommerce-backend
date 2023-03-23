@@ -4,7 +4,7 @@ import {
   deleteCartItem,
   updateCartItem,
   getCartItems,
-} from '../services/cart.service';
+} from '../services';
 import { IRequest } from '../utils/interfaces';
 import tryCatch from '../utils/tryCatch';
 

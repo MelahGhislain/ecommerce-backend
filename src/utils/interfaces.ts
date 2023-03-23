@@ -31,11 +31,11 @@ export interface ICart {
 export interface IProduct {
   name: string;
   slug: string;
-  category: ICategory[];
+  category: string[];
   mainImage: string;
   amount: number;
   description: string;
-  tags?: ITag[];
+  tags?: string[];
   images?: string[];
   onPromotion?: boolean;
   promoPrice?: number;
@@ -47,4 +47,10 @@ export interface ITag {
   name: string;
 }
 
-export interface ICategory {}
+export interface ICategory {
+  name: string;
+  slug: string;
+  products?: string[];
+  image: string;
+  description: string;
+}

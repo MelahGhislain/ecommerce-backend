@@ -30,6 +30,6 @@ const categorySchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const Category = mongoose.model(ModelEnum.Category, categorySchema);
+const CategoryModel = mongoose.model(ModelEnum.Category, categorySchema);
 
-export default Category;
+export default CategoryModel;
