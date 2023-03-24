@@ -1,6 +1,6 @@
 import ValidationError from '../errors/ValidationError';
 import UserModel from '../models/user.model';
-import { ModelEnum } from '../utils/constants';
+import { PopulateEnums } from '../utils/constants';
 import { User } from '../utils/interfaces';
 import { authValidate, validateUser } from '../utils/validators';
 import bcrypt from 'bcrypt';
@@ -32,10 +32,10 @@ export async function createNewUser(user: User) {
  */
 export async function getUsers() {
   const users = await UserModel.find({})
-    .populate({ path: ModelEnum.Product, strictPopulate: false })
+    .populate({ path: PopulateEnums.Product, strictPopulate: false })
     .populate({
       path: 'cartItems',
-      populate: { path: ModelEnum.Product, strictPopulate: false },
+      populate: { path: PopulateEnums.Product, strictPopulate: false },
     })
     .exec();
   return users;
@@ -50,10 +50,10 @@ export async function getUser(id: string) {
   if (!id) throw new ValidationError('id', 'user id is required');
 
   const user = await UserModel.findById(id)
-    .populate({ path: ModelEnum.Product, strictPopulate: false })
+    .populate({ path: PopulateEnums.Product, strictPopulate: false })
     .populate({
       path: 'cartItems',
-      populate: { path: ModelEnum.Product, strictPopulate: false },
+      populate: { path: PopulateEnums.Product, strictPopulate: false },
     })
     .exec();
   return user;
@@ -72,10 +72,10 @@ export async function editUser(id: string, user: User) {
     { $set: user },
     { new: true },
   )
-    .populate({ path: ModelEnum.Product, strictPopulate: false })
+    .populate({ path: PopulateEnums.Product, strictPopulate: false })
     .populate({
       path: 'cartItems',
-      populate: { path: ModelEnum.Product, strictPopulate: false },
+      populate: { path: PopulateEnums.Product, strictPopulate: false },
     })
     .exec();
   return updateUser;

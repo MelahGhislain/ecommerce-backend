@@ -1,9 +1,10 @@
 import ValidationError from '../errors/ValidationError';
-import { ModelEnum } from '../utils/constants';
+import { PopulateEnums } from '../utils/constants';
 import { IProduct } from '../utils/interfaces';
 import { validateProduct } from '../utils/validators';
 import dotenv from 'dotenv';
 import ProductModel from '../models/product.model';
+import CategoryModel from '../models/category.model';
 dotenv.config();
 
 /**
@@ -16,8 +17,23 @@ export async function createNewProduct(product: IProduct) {
   if (error) {
     throw new ValidationError(error.name, error.message);
   }
+  if (product.categories.length < 1) {
+    throw new ValidationError(
+      'categories',
+      'product must have at least one category',
+    );
+  }
 
   const newProduct = await ProductModel.create(product);
+
+  // update the various categories with the newly created product
+  product.categories.forEach(async (categoryID) => {
+    await CategoryModel.findOneAndUpdate(
+      { _id: categoryID },
+      { $addToSet: { products: newProduct._id } },
+    );
+  });
+
   return newProduct;
 }
 
@@ -28,8 +44,8 @@ export async function createNewProduct(product: IProduct) {
  */
 export async function getProducts() {
   const Products = await ProductModel.find({})
-    .populate({ path: ModelEnum.Category, strictPopulate: false })
-    .populate({ path: ModelEnum.Tag, strictPopulate: false })
+    .populate({ path: PopulateEnums.Category, strictPopulate: false })
+    .populate({ path: PopulateEnums.Tag, strictPopulate: false })
     .exec();
 
   return Products;
@@ -43,10 +59,10 @@ export async function getProducts() {
 export async function getProduct(id: string) {
   if (!id) throw new ValidationError('id', 'product id is required');
 
-  const product = await ProductModel.findById(id)
-    .populate({ path: ModelEnum.Category, strictPopulate: false })
-    .populate({ path: ModelEnum.Tag, strictPopulate: false })
-    .exec();
+  const product = await ProductModel.findById(id);
+  // .populate({ path: PopulateEnums.Category, strictPopulate: false })
+  // .populate({ path: PopulateEnums.Tag, strictPopulate: false })
+  // .exec();
   return product;
 }
 
@@ -63,8 +79,8 @@ export async function editProduct(id: string, product: IProduct) {
     { $set: product },
     { new: true },
   )
-    .populate({ path: ModelEnum.Category, strictPopulate: false })
-    .populate({ path: ModelEnum.Tag, strictPopulate: false })
+    .populate({ path: PopulateEnums.Category, strictPopulate: false })
+    .populate({ path: PopulateEnums.Tag, strictPopulate: false })
     .exec();
   return newProduct;
 }

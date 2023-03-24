@@ -1,9 +1,11 @@
 import ValidationError from '../errors/ValidationError';
-import { ModelEnum } from '../utils/constants';
-import { ICategory, IProduct } from '../utils/interfaces';
+import { PopulateEnums } from '../utils/constants';
+import { ICategory } from '../utils/interfaces';
 import dotenv from 'dotenv';
 import { validateCategory } from '../utils/validators';
 import CategoryModel from '../models/category.model';
+import ProductModel from '../models/product.model';
+import logger from '../logger';
 dotenv.config();
 
 /**
@@ -28,7 +30,7 @@ export async function createNewCategory(category: ICategory) {
  */
 export async function getCategories() {
   const categories = await CategoryModel.find({})
-    .populate({ path: ModelEnum.Product, strictPopulate: false })
+    .populate({ path: PopulateEnums.Product, strictPopulate: false })
     .exec();
 
   return categories;
@@ -43,7 +45,7 @@ export async function getCategory(id: string) {
   if (!id) throw new ValidationError('id', 'category id is required');
 
   const category = await CategoryModel.findById(id)
-    .populate({ path: ModelEnum.Product, strictPopulate: false })
+    .populate({ path: PopulateEnums.Product, strictPopulate: false })
     .exec();
   return category;
 }
@@ -61,7 +63,7 @@ export async function editCategory(id: string, category: ICategory) {
     { $set: category },
     { new: true },
   )
-    .populate({ path: ModelEnum.Product, strictPopulate: false })
+    .populate({ path: PopulateEnums.Product, strictPopulate: false })
     .exec();
   return newCategory;
 }
@@ -73,6 +75,15 @@ export async function editCategory(id: string, category: ICategory) {
  */
 export async function deleteCategory(id: string) {
   if (!id) throw new ValidationError('id', 'category id is required');
+
   const category = await CategoryModel.findByIdAndDelete(id);
+  // remove category from product.categories { $pull: { "groups.$._id": groupId } }.$._id": category._id
+  if (category) {
+    category.products.forEach(async (productId) => {
+      await ProductModel.findByIdAndUpdate(productId, {
+        $pull: { categories: category._id },
+      });
+    });
+  }
   return category;
 }

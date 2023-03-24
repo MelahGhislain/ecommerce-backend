@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { formatError } from './helpers';
-import { ICategory, IProduct, User } from './interfaces';
+import { ICategory, IProduct, ITag, User } from './interfaces';
 
 // Validation schemas
 const userValidationSchema = Joi.object().keys({
@@ -18,7 +18,7 @@ const userValidationSchema = Joi.object().keys({
 const productValidationSchema = Joi.object().keys({
   name: Joi.string().required(),
   slug: Joi.string().required(),
-  category: Joi.array().items(Joi.string()),
+  categories: Joi.array().items(Joi.string()),
   mainImage: Joi.string(),
   amount: Joi.number(),
   description: Joi.string(),
@@ -36,6 +36,10 @@ const categoryValidationSchema = Joi.object().keys({
   products: Joi.array().items(Joi.string()),
   image: Joi.string().required(),
   description: Joi.string().required(),
+});
+
+const tagValidationSchema = Joi.object().keys({
+  name: Joi.string().required(),
 });
 
 const loginSchema = Joi.object().keys({
@@ -60,5 +64,9 @@ export function validateProduct(product: IProduct) {
 
 export function validateCategory(category: ICategory) {
   const { value, error } = categoryValidationSchema.validate(category);
+  return formatError(error);
+}
+export function validateTag(tag: ITag) {
+  const { value, error } = tagValidationSchema.validate(tag);
   return formatError(error);
 }

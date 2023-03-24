@@ -31,7 +31,7 @@ export interface ICart {
 export interface IProduct {
   name: string;
   slug: string;
-  category: string[];
+  categories: string[];
   mainImage: string;
   amount: number;
   description: string;

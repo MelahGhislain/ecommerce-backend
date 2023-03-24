@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../errors/CustomError';
+import logger from '../logger';
 
 const errorHandler = (
   error: any,
@@ -23,6 +24,7 @@ const errorHandler = (
     });
   }
 
+  logger.error(error.message);
   res.send({ status: 500, errors: [{ message: 'Server Error' }] });
 };
 

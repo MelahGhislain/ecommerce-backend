@@ -1,6 +1,6 @@
 import ValidationError from '../errors/ValidationError';
 import UserModel from '../models/user.model';
-import { ModelEnum } from '../utils/constants';
+import { PopulateEnums } from '../utils/constants';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -20,10 +20,10 @@ export async function addToCart(id: string, productId: string) {
     { $addToSet: { cartItems: { product: productId } } },
     { new: true },
   )
-    .populate({ path: ModelEnum.Product, strictPopulate: false })
+    .populate({ path: PopulateEnums.Product, strictPopulate: false })
     .populate({
       path: 'cartItems',
-      populate: { path: ModelEnum.Product, strictPopulate: false },
+      populate: { path: PopulateEnums.Product, strictPopulate: false },
     })
     .exec();
   const cartItems = userData?.cartItems;
@@ -37,10 +37,10 @@ export async function addToCart(id: string, productId: string) {
  */
 export async function getCartItems(id: string) {
   const userData = await UserModel.findById(id)
-    .populate({ path: ModelEnum.Product, strictPopulate: false })
+    .populate({ path: PopulateEnums.Product, strictPopulate: false })
     .populate({
       path: 'cartItems',
-      populate: { path: ModelEnum.Product, strictPopulate: false },
+      populate: { path: PopulateEnums.Product, strictPopulate: false },
     })
     .exec();
   const cartItems = userData?.cartItems;
@@ -74,10 +74,10 @@ export async function updateCartItem(
       { $set: { 'cartItems.$': data } },
       { new: true },
     )
-      .populate({ path: ModelEnum.Product, strictPopulate: false })
+      .populate({ path: PopulateEnums.Product, strictPopulate: false })
       .populate({
         path: 'cartItems',
-        populate: { path: ModelEnum.Product, strictPopulate: false },
+        populate: { path: PopulateEnums.Product, strictPopulate: false },
       })
       .exec();
   }
@@ -100,10 +100,10 @@ export async function deleteCartItem(productId: string) {
     { $pull: { cartItems: { product: productId } } },
     { new: true },
   )
-    .populate({ path: ModelEnum.Product, strictPopulate: false })
+    .populate({ path: PopulateEnums.Product, strictPopulate: false })
     .populate({
       path: 'cartItems',
-      populate: { path: ModelEnum.Product, strictPopulate: false },
+      populate: { path: PopulateEnums.Product, strictPopulate: false },
     })
     .exec();
 

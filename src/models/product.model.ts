@@ -13,7 +13,7 @@ const productSchema = new Schema<IProduct>(
       unique: true,
       required: [true, 'slug is required'],
     },
-    category: [
+    categories: [
       {
         type: Schema.Types.ObjectId,
         ref: ModelEnum.Category,
