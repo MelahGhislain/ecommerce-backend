@@ -77,7 +77,7 @@ export async function deleteCategory(id: string) {
   if (!id) throw new ValidationError('id', 'category id is required');
 
   const category = await CategoryModel.findByIdAndDelete(id);
-  // remove category from product.categories { $pull: { "groups.$._id": groupId } }.$._id": category._id
+  // remove category from product.categories
   if (category) {
     category.products.forEach(async (productId) => {
       await ProductModel.findByIdAndUpdate(productId, {

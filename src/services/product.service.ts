@@ -93,5 +93,13 @@ export async function editProduct(id: string, product: IProduct) {
 export async function deleteProduct(id: string) {
   if (!id) throw new ValidationError('id', 'product id is required');
   const product = await ProductModel.findByIdAndDelete(id);
+  // remove product from categories.product
+  if (product) {
+    product.categories.forEach(async (categoryId) => {
+      await CategoryModel.findByIdAndUpdate(categoryId, {
+        $pull: { products: product._id },
+      });
+    });
+  }
   return product;
 }

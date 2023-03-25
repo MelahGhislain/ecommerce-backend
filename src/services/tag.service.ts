@@ -3,6 +3,7 @@ import { validateTag } from '../utils/validators';
 import dotenv from 'dotenv';
 import TagModel from '../models/tag.model';
 import { ITag } from '../utils/interfaces';
+import ProductModel from '../models/product.model';
 dotenv.config();
 
 /**
@@ -64,5 +65,16 @@ export async function editTag(id: string, tag: ITag) {
 export async function deleteTag(id: string) {
   if (!id) throw new ValidationError('id', 'tag id is required');
   const tag = await TagModel.findByIdAndDelete(id);
+  // remove tag from product.tags
+  if (tag) {
+    await ProductModel.updateMany(
+      { tags: tag._id },
+      {
+        $pull: { tags: tag._id },
+      },
+      { multi: true, upsert: true }
+    );
+  }
+
   return tag;
 }
