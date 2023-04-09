@@ -26,7 +26,7 @@ app.use('/api/delux/v1', logRouteVerbs, router)
  app.use('*', logRouteVerbs, errorHandler)
 
  connect().then(res => {
-    app.listen(PORT, ()=> logger.info('Server Started successfully! on port ' + PORT))
+    app.listen(PORT, ()=> logger.info('Server Started on http://localhost:' + PORT))
  }).catch(error => {
    logger.error(error.message)
  })
